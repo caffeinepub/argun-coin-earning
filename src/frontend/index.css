@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   ARGUN COIN EARNING — Design Tokens (OKLCH)
+   Dark financial theme: Deep Navy + Gold
+   ============================================ */
+
+/* Bricolage Grotesque — Display */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque[opsz,wdth,wght].woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Outfit — Body */
+@font-face {
+  font-family: "Outfit";
+  src: url("/assets/fonts/Outfit[wght].woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* === DARK MODE (primary mode) === */
+    --background: 0.14 0.02 265;
+    --foreground: 0.95 0.005 90;
+    --card: 0.18 0.025 265;
+    --card-foreground: 0.92 0.008 90;
+    --popover: 0.2 0.03 265;
+    --popover-foreground: 0.92 0.008 90;
+
+    /* Gold accent for coins */
+    --primary: 0.78 0.16 70;
+    --primary-foreground: 0.12 0.01 265;
+
+    --secondary: 0.22 0.035 265;
+    --secondary-foreground: 0.85 0.01 90;
+
+    --muted: 0.2 0.025 265;
+    --muted-foreground: 0.58 0.015 265;
+
+    /* Gold accent */
+    --accent: 0.82 0.18 72;
+    --accent-foreground: 0.12 0.01 265;
+
+    --destructive: 0.65 0.22 25;
+    --destructive-foreground: 0.98 0 0;
+
+    --success: 0.68 0.18 150;
+    --success-foreground: 0.12 0.01 265;
+
+    --warning: 0.78 0.16 70;
+    --warning-foreground: 0.12 0.01 265;
+
+    --border: 1 0 0 / 10%;
+    --input: 1 0 0 / 8%;
+    --ring: 0.78 0.16 70;
+
+    /* Gold coin colors */
+    --gold-bright: 0.84 0.19 76;
+    --gold-mid: 0.74 0.16 68;
+    --gold-deep: 0.6 0.14 64;
+
+    /* Status colors */
+    --pending: 0.72 0.15 55;
+    --approved: 0.68 0.18 150;
+    --rejected: 0.65 0.22 25;
+
+    /* Chart */
+    --chart-1: 0.78 0.16 70;
+    --chart-2: 0.68 0.18 150;
+    --chart-3: 0.65 0.2 280;
+    --chart-4: 0.65 0.22 25;
+    --chart-5: 0.6 0.15 200;
+
+    --sidebar: 0.16 0.025 265;
+    --sidebar-foreground: 0.85 0.008 90;
+    --sidebar-primary: 0.78 0.16 70;
+    --sidebar-primary-foreground: 0.12 0.01 265;
+    --sidebar-accent: 0.22 0.035 265;
+    --sidebar-accent-foreground: 0.85 0.01 90;
+    --sidebar-border: 1 0 0 / 10%;
+    --sidebar-ring: 0.78 0.16 70;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Outfit", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* App background gradient */
+  #root {
+    min-height: 100dvh;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.25 0.06 265 / 0.6), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 80%, oklch(0.2 0.05 285 / 0.4), transparent),
+      oklch(var(--background));
+  }
+}
+
+/* ============================================
+   Custom utility classes
+   ============================================ */
+
+.glass-card {
+  background: oklch(var(--card) / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid oklch(1 0 0 / 0.08);
+}
+
+.glass-card-strong {
+  background: oklch(var(--card) / 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid oklch(1 0 0 / 0.12);
+}
+
+.gold-text {
+  background: linear-gradient(135deg, oklch(var(--gold-bright)), oklch(var(--gold-mid)), oklch(var(--gold-deep)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-glow {
+  box-shadow: 0 0 20px oklch(var(--gold-mid) / 0.3), 0 0 40px oklch(var(--gold-mid) / 0.1);
+}
+
+.gold-border {
+  border: 1px solid oklch(var(--gold-mid) / 0.4);
+}
+
+.coin-shimmer {
+  background: linear-gradient(
+    135deg,
+    oklch(var(--gold-deep)) 0%,
+    oklch(var(--gold-bright)) 40%,
+    oklch(var(--gold-mid)) 60%,
+    oklch(var(--gold-deep)) 100%
+  );
+}
+
+/* Bottom nav safe area */
+.bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(1 0 0 / 0.15);
+  border-radius: 4px;
+}

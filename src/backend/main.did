@@ -1,0 +1,158 @@
+type WithdrawalStatus = 
+ variant {
+   Approved;
+   Pending;
+   Rejected;
+ };
+type WithdrawalRecord = 
+ record {
+   accountNumber: text;
+   amount: float64;
+   createdAt: int;
+   id: nat;
+   method: PaymentMethod;
+   netAmount: float64;
+   status: WithdrawalStatus;
+   userId: principal;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = 
+ record {
+   adsWatchedToday: nat;
+   coinBalance: float64;
+   createdAt: int;
+   email: text;
+   id: principal;
+   lastAdDate: text;
+   lastClaimDate: text;
+   phone: text;
+   planDay: nat;
+   planStartDay: int;
+   referralBonusPaid: bool;
+   referralCode: text;
+   referredBy: opt text;
+   teamRewardEligible: bool;
+   username: text;
+ };
+type PaymentMethod = 
+ variant {
+   BankTransfer;
+   Easypaisa;
+   JazzCash;
+ };
+type DepositStatus = 
+ variant {
+   Approved;
+   Pending;
+   Rejected;
+ };
+type DepositRecord = 
+ record {
+   amount: float64;
+   createdAt: int;
+   id: nat;
+   method: PaymentMethod;
+   note: text;
+   screenshotHash: text;
+   status: DepositStatus;
+   userId: principal;
+ };
+type AppStats = 
+ record {
+   pendingDeposits: nat;
+   pendingWithdrawals: nat;
+   totalDeposits: nat;
+   totalUsers: nat;
+   totalWithdrawals: nat;
+ };
+type AdRecord = 
+ record {
+   active: bool;
+   id: nat;
+   title: text;
+   url: text;
+ };
+service : {
+  _initializeAccessControlWithSecret: (userSecret: text) -> ();
+  adminAddAd: (title: text, url: text) -> (nat);
+  adminAdjustCoins: (userId: principal, delta: float64, _reason: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminApproveDeposit: (depositId: nat, adminNote: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminApproveWithdrawal: (withdrawalId: nat) -> (variant {
+                                                    err: text;
+                                                    ok;
+                                                  });
+  adminGetAllAds: () -> (vec AdRecord) query;
+  adminGetAllDeposits: () -> (vec DepositRecord) query;
+  adminGetAllUsers: () -> (vec UserProfile) query;
+  adminGetAllWithdrawals: () -> (vec WithdrawalRecord) query;
+  adminGetPendingDeposits: () -> (vec DepositRecord) query;
+  adminGetPendingWithdrawals: () -> (vec WithdrawalRecord) query;
+  adminGetStats: () -> (AppStats) query;
+  adminRejectDeposit: (depositId: nat, adminNote: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminRejectWithdrawal: (withdrawalId: nat) -> (variant {
+                                                   err: text;
+                                                   ok;
+                                                 });
+  adminRemoveAd: (adId: nat) -> (variant {
+                                   err: text;
+                                   ok;
+                                 });
+  adminToggleAd: (adId: nat) -> (variant {
+                                   err: text;
+                                   ok;
+                                 });
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  claimDailyProfit: () -> (variant {
+                             err: text;
+                             ok: float64;
+                           });
+  getActiveAds: () -> (vec AdRecord) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getMyDailyProfit: () -> (float64) query;
+  getMyDeposits: () -> (vec DepositRecord) query;
+  getMyProfile: () -> (variant {
+                         err: text;
+                         ok: UserProfile;
+                       }) query;
+  getMyReferrals: () -> (vec UserProfile) query;
+  getMyTeamSize: () -> (nat) query;
+  getMyWithdrawals: () -> (vec WithdrawalRecord) query;
+  isCallerAdmin: () -> (bool) query;
+  lookupReferralCode: (code: text) -> (bool) query;
+  registerUser: (username: text, email: text, phone: text, referralCodeOpt:
+   opt text) -> (variant {
+                   err: text;
+                   ok: UserProfile;
+                 });
+  submitDeposit: (amount: float64, method: PaymentMethod, screenshotHash:
+   text) -> (variant {
+               err: text;
+               ok: nat;
+             });
+  submitWithdrawal: (amount: float64, method: PaymentMethod, accountNumber:
+   text) -> (variant {
+               err: text;
+               ok: nat;
+             });
+  watchAd: (_adId: nat) -> (variant {
+                              err: text;
+                              ok: nat;
+                            });
+}
